@@ -23,6 +23,8 @@ app._static_folder = 'static/'
 app.config['SECRET_KEY'] = '@fgrf50&!~0lqpt7320@'
 db = SQLAlchemy(app)
 
+#KNYdSLvYkUsVvHuPJfsgIQ
+
 #Classes of all tables existing in SPOT DB.
 class CPR_RAW(db.Model):
     LR_ID = db.Column(db.String(), primary_key=True)
