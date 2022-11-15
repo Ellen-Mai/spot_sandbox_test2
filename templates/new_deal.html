@@ -1,0 +1,52 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Line Review Deals</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<br>
+<center><h1><font face="Times New Roman" color ="purple" size="6pt">Add a new deal</font></h1></center>
+    <hr>
+    <form action = '/add_deal' method = 'POST'>
+        <div class="form-group w-25">
+     <label for="DEAL_ID"><font face="Times New Roman" color ="purple" size = "4.5pt">Enter Deal Id.</font></label>
+     <input class="form-control" type="text" name = 'DEAL_ID' id ='DEAL_ID' placeholder="Enter Deal Id." aria-label="Enter Deal No.">
+     <label for="DEAL_num"><font face="Times New Roman" color ="purple" size = "4.5pt">Enter Deal Num.</font></label>
+     <input class="form-control" type="text" name = 'DEAL_num' id ='DEAL_num' placeholder="Enter Deal No." aria-label="Enter Deal No.">
+     <label for="CPR"><font face="Times New Roman" color ="purple" size = "4.5pt">Enter CPR Year(CPR_20xx)</font></label>
+     <input class="form-control" type="text" name = 'CPR' id ='CPR' placeholder="Enter Deal No." aria-label="Enter Deal No.">
+     <label for="POG"><font face="Times New Roman" color ="purple" size = "4.5pt">Enter POG No.</font></label>
+     <input class="form-control" type="text" name = 'POG' id ='POG' placeholder="Enter POG No." aria-label="Enter POG No.">
+    <label for="O_START_DATE"><font face="Times New Roman" color ="purple" size="4.5pt">Enter O Start Date:</font></label>
+     <input class="form-control" type="date" placeholder="Enter Start Date"  name='O_START_DATE' id='O_START_DATE' aria-label="Enter Start Date">
+     <label for="O_END_DATE"><font face="Times New Roman" color ="purple" size="4.5pt">Enter O End Date:</font></label>
+     <input class="form-control" type="date" placeholder="Enter O end Date"  name='O_END_DATE' id='O_END_DATE' aria-label="Enter End Date">
+    <label for="DEALER_MAIL_DATE"><font face="Times New Roman" color ="purple" size="4.5pt">Enter Dealer mail Date:</font></label>
+     <input class="form-control" type="date" placeholder="Enter Mail Date"  name='DEALER_MAIL_DATE' id='DEALER_MAIL_DATE' aria-label="Enter Mail Date">
+    <label for="Target_store_setup"><font face="Times New Roman" color ="purple" size="4.5pt">Enter Target setup Date:</font></label>
+     <input class="form-control" type="date" placeholder="Enter target setup Date"  name='Target_store_setup' id='Target_store_setup' aria-label="Enter target setup Date">
+    <label for="MERCH_RELEASE"><font face="Times New Roman" color ="purple" size="4.5pt">Enter Merch Release Date:</font></label>
+     <input class="form-control" type="date" placeholder="Enter Mail Date"  name='MERCH_RELEASE' id='MERCH_RELEASE' aria-label="Enter MERCH_RELEASE Date">
+
+    <br>
+    <input class="btn btn-primary" type='submit' name="action" value = 'submit'>
+
+       </div>
+    </form>
+    <hr>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Miscellaneous schedule</title>
+{% endblock %}
+
+{% block body %}
+<br>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Edit Miscellaneous schedule</center>
+</i></font></h1>
+
+<hr>
+<form action='/misc/edit/info.DEAL/info.TASK/info.DESC/info.Id' method='POST'>
+    {% for x in info %}
+   <div class="form-group w-25">
+       <h2><label for="DEAL"><font face="Times New Roman" color="purple" size="5pt"><i>Deal Id:</i></font></label></h2>
+        <input class="form-control" type="text" name='DEAL' id='DEAL' value = "{{x.DEAL}}" required readonly>
+       <br>
+       <h4><label for="TASK"><font face="Times New Roman" color="purple" size="5pt"><i>Task:</i></font></label></h4>
+        <input class="form-control" type="text" name='TASK' id='TASK' value = "{{x.TASK}}" readonly aria-label="Enter Description" >
+       <br>
+	   <h4><label for="DESC"><font face="Times New Roman" color="purple" size="5pt"><i>Desc (POG#):</i></font></label></h4>
+        <input class="form-control" type="text" name='DESC' id='DESC' value = "{{x.DESC}}" readonly aria-label="Enter Description" >
+       <br>
+        <label for="SPS"><font face="Times New Roman" color="purple" size="5pt"><i>Select SPS</i></font></label>
+        <select class="form-control" name='SPS' id="SPS" required>
+            {% for name in sps_names %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
+        <h4><label for="START_DATE"><font face="Times New Roman" color="purple" size="5pt"><i>Enter Start Date:</i></font></label></h4>
+        <input class="form-control" type="date" name='START_DATE' id='START_DATE' value = "{{x.START_DATE}}" required placeholder="Enter End Date"
+               aria-label="Enter START Date" required>
+        <br>
+        <h4><label for="END_DATE"><font face="Times New Roman" color="purple" size="5pt"><i>Enter End Date:</i></font></label></h4>
+        <input class="form-control" type="date" name='END_DATE' id='END_DATE' value = "{{x.END_DATE}}" required placeholder="Enter End Date"
+               aria-label="Enter End Date" required>
+       <input class="form-control" type="text" name='Id' id='Id' value = "{{x.Id}}" required hidden readonly>
+
+    </div>
+
+    <input class="btn btn-info" type='submit' value='Update Misc Schedule'>
+{% endfor %}
+</form>
+<hr>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Edit SPS</title>
+{% endblock %}
+
+{% block body %}
+
+<h1><font face="Times New Roman" size="7pt" color="purple">
+    <center>Editing SPS Information</center>
+</font></h1>
+
+{% for x in info %}
+<hr>
+<br>
+<a style="color:purple" class="fa fa-user fa-lg float-right" href="/posts/new"><font face="Arial">+ New SPS</font></a>
+<form action='/spsdepts/edit/{{x.SPS_ID}}' method='POST'>
+    <div class="form-group w-25">
+        <br>
+        <label for="SPS_ID"><font face="Times New Roman" size="4pt" color="purple">Space Planner ID:</font></label>
+        <input class="form-control" type="text" name='SPS_ID' id='DEAL_ID' value="{{x.SPS_ID}}" readonly
+               aria-label="Enter SPS_ID">
+        <br>
+        <label for="Department"><font face="Times New Roman" size="4pt" color="purple" size="5pt">Select
+            Department</i></font></label>
+        <select class="form-control" name='Department'>
+            {% for dept in dl %}
+            <option>{{ dept }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="SPS"><font face="Times New Roman" size="4pt" color="purple">SPS:</font></label>
+        <input class="form-control" type="text" name='SPS' id='SPS' value="{{x.SPS}} " aria-label="Enter SPS">
+        <br>
+        <label for="EFF_DT"><font face="Times New Roman" size="4pt" color="purple">Effective Date:</font></label>
+        <input class="form-control" type="date" name='EFF_DT' id='EFF_DT' value="{{ dt }}" aria-label="Enter Date">
+        <br>
+
+        <input type='submit' class="btn btn-primary" value='Update SPS Info'>
+    </div>
+</form>
+<hr>
+
+{% endfor %}
+{% endblock %}

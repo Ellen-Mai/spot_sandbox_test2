@@ -1,0 +1,66 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Line Review Deals</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<br>
+<center><h1><font face="Times New Roman" color ="purple" size="6pt">Deal Information and review tab</font></h1></center>
+	<a style = "display:inline" class = "btn btn-info float-left" href = "/placeholders">View Placeholder POGs</a>
+	<a style = "display:inline" class = "btn btn-danger float-right" href = "/unassigned">Unassigned POGs</a>
+	<br>
+<br>	
+<a style = "display:inline" class = "btn btn-success float-left" href = "/add_deal">+ New Deal</a> <a style = "display:inline" class = "btn btn-warning float-right" href = "/missed_deals">Update Gate 3 tracker</a> 
+<br> 
+
+<br>
+
+      <br>	
+    <form action = '/deals' method = 'POST'>
+
+        <div class="form-group w-25">
+            <label for="DEAL_NUM"><font face="Times New Roman" color ="purple" size = "5pt">Enter Deal No.(0xxx)</font></label>
+     <input class="form-control" type="text" name = 'DEAL_NUM' id ='DEAL_NUM' placeholder="Enter Deal No." aria-label="Enter Deal No.">
+     <br>
+            <br>
+    <input class="btn btn-primary" type='submit' name="action" value = 'Detailed info'>
+	
+    <br>
+	<br>
+     <input class="btn btn-info" type='submit' name="action" value = 'View'> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+	 <input class="btn btn-dark" type='submit' name="action" value = 'Placeholder'> 
+	 <br>
+	 
+	 
+            <hr>
+			
+            <h1><font face="Times New Roman" color ="purple" size="5pt">Deal Review Tab</font></h1> 			
+				
+            <label for="START_DATE"><font face="Times New Roman" color ="purple" size="4.5pt"><i>Enter Start Date:</i></font></label>
+        <input class="form-control" type="date" placeholder="Enter Start Date"  name='START_DATE' id='START_DATE'
+               aria-label="Enter Start Date">
+        <br>
+        <label for="END_DATE"><font face="Times New Roman" color ="purple" size="4.5pt"><i>Enter End Date:</i></font></label>
+        <input class="form-control" type="date" name='END_DATE' id='END_DATE' placeholder="Enter End Date"
+               aria-label="Enter End Date">
+            <br>
+     <input class="btn btn-info" type='submit' name="action" value = 'Deal Review'>
+       </div>
+    </form>
+    <hr>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Run Application</title>
+{% endblock %}
+
+{% block body %}
+
+
+<br>
+
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Application Run: Write CPR Info to Database table</center>
+</i></font></h1>
+
+<hr>
+<form action='/getfinelines' method='POST'>
+    <label for="POG_NUM"><font face="Times New Roman" size="5pt" color="black"><i>Extract Finelines from CPR document</i></font></label>
+    <input class="form-control" type="text" name='POG_NUM' id='POG_NUM' value="Run this" placeholder="Enter POG" hidden readonly="readonly"
+           aria-label="Enter title">
+    <p><font color = "black" face="Times New Roman" size="3.5pt"><b>Submitting a run request will extract Finelines from the CPR document and write the data to the database table. On successful
+    completion, you'll be redirected to the home page.</b></font></p>
+    <input class="btn btn-success" type='submit' value='Extract Finelines'>
+
+</form>
+<hr>
+{% endblock %}

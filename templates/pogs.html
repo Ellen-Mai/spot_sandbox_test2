@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block head %}
+  <title>All POGs here</title>
+{% endblock %}
+
+
+
+{% block body %}
+
+<style>
+body {
+  background-image: url({{ url_for('static', filename='images/ctc_blur.jpeg') }});
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+</style>
+
+<div>
+    <br>
+ <h1 style="display:inline">All POGs here</h1>
+ <a style = "display:inline" class = "btn btn-success float-right" href = "/pogs/new">+ New POG</a>
+</div>
+    {% for pog in pogs %}
+        <br>
+        <h2>{{ pog.POG_NUM }}</h2>
+
+        <small>POG Desc: {{ pog.POG_DESC}} </small>
+
+        <br>
+        <br>
+        <p>{{ pog.SPS }}</p>
+        <br>
+        <br>
+        <br>
+        <hr>
+    {% endfor%}
+{% endblock%}

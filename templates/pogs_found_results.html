@@ -1,0 +1,45 @@
+{% extends 'base_2.html' %}
+{% block head %}
+  <title>All POGs here</title>
+{% endblock %}
+
+{% block body %}
+
+<style>
+body {
+  background-image: url({{ url_for('static', filename='images/ctc_blur.jpeg') }});
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+</style>
+
+<div>
+    <br>
+    <h1 style="display:inline"><font face="Times New Roman" color ="purple" size="6pt"><i>POG Info</i></font></h1>
+<hr>
+</div>
+
+        <br>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>POG Num:</b> {{ pog_info.POG_NUM}}</font></h1>
+<hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>POG Desc:</b> {{ pog_info.POG_DESC}} </font></h1>
+        <hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>POG Owner:</b> {{ pog_info.SPS }}</font></h1>
+        <hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>V Build Owner:</b> {{ pog_info.V_SPS }}</font></h1>
+        <hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>Recco O Build days:</b> {{ pog_info.Recco_O }}</font></h1>
+        <hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>Recco V Build days:</b> {{ pog_info.Recco_V }}</font></h1>
+        <hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>ESL Difficulty Index:</b> {{ pog_info.ESL_DIFF_INDEX }}</font></h1>
+        <hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>Extd POG build:</b> {{ pog_info.EXTD_BUILD }}</font></h1>
+        <hr>
+<h1><font face="Times New Roman" color ="black" size="4pt"><b>Difficulty:</b> {{ pog_info.Difficulty }}</font></h1>
+        <hr>
+        <a class="btn btn-danger" href="/pogs/delete/{{pog_info.POG_NUM}}">
+         <i class="fa fa-trash-o fa-lg"></i> Delete</a>
+        <a class = "btn btn-primary" href ='/pogs/edit/{{pog_info.POG_NUM}}'>Edit</a>
+{% endblock%}

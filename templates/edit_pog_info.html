@@ -1,0 +1,66 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Update POG</title>
+{% endblock %}
+
+{% block body %}
+
+
+<h1><font face="Times New Roman" color="purple" size="7pt"><i>
+    <center>Update POG Owner</center>
+</i></font></h1>
+
+<hr>
+<form action='/pogs/edit/{{pog.POG_NUM}}' method='POST'>
+    <div class="form-group w-25">
+        {{ form.csrf_token }}
+        <br>
+        <label for="POG_NUM"><font face="Times New Roman" color="purple" size="5pt">POG No.:</font></label>
+        <input class="form-control" type="text" name='POG_NUM' id='POG_NUM' value="{{pog.POG_NUM}}" readonly
+               aria-label="Enter POG info">
+        <br>
+        <label for="POG_NUM"><font face="Times New Roman" color="purple" size="5pt">POG Description:</font></label>
+        <input class="form-control" type="text" name='POG_DESC' id='POG_DESC' value="{{pog.POG_DESC}}"
+               aria-label="Enter POG Desc">
+        <br>
+        <label for="POG_NUM"><font face="Times New Roman" color="purple" size="5pt">Recco O days:</font></label>
+        <input class="form-control" type="text" name='Recco_O' id='Recco_O' value="{{pog.Recco_O}}"
+               aria-label="Enter POG Desc">
+        <br>
+        <label for="POG_NUM"><font face="Times New Roman" color="purple" size="5pt">Recco V days:</font></label>
+        <input class="form-control" type="text" name='Recco_V' id='Recco_V' value="{{pog.Recco_V}}"
+               aria-label="Enter POG Desc">
+        <br>
+         <label for="ESL_DIFF_INDEX"><font face="Times New Roman" color="purple" size="5pt"><i>Select ESL</i></font></label>
+            <select class="form-control" name='ESL_DIFF_INDEX' id="ESL_DIFF_INDEX" >
+                {% for esl_index in d_list %}
+                <option>{{ esl_index }}</option>
+                {% endfor %}
+            </select>
+        <br>
+        <label for="Extd_build"><font face="Times New Roman" color="purple" size="5pt">Extd build days:</font></label>
+        <input class="form-control" type="text" name='Extd_build' id='Extd_build' value="{{pog.EXTD_BUILD}}"
+               aria-label="Enter Extd_build">
+        <br>
+        <label for="Difficulty"><font face="Times New Roman" color="purple" size="5pt"><i>Select Diffuclty</i></font></label>
+            <select class="form-control" name='Difficulty' id="Difficulty" >
+                {% for diff in diff_drop_down %}
+                <option>{{ diff }}</option>
+                {% endfor %}
+            </select>
+        <br>
+        <label for="SPS"><font face="Times New Roman" color="purple" size="5pt"><i>Select new POG Owner:</i></font></label>
+        <br>
+           {{ form.SPS }}
+        <br>
+         <label for="SPS"><font face="Times New Roman" color="purple" size="5pt"><i>Select new VPOG Owner:</i></font></label>
+        <br>
+           {{ form1.V }}
+        <br>
+        <br>
+        <input class="btn btn-success" type='submit' value='Update POG Info'>
+    </div>
+</form>
+<hr>
+{% endblock %}

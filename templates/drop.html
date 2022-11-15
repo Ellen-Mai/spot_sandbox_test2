@@ -1,0 +1,22 @@
+{% extends 'base_2.html' %}
+
+{% block body %}
+<br>
+<br>
+<br>
+ <form method="POST">
+     <div class="form-group w-25">
+     {{form.csrf_token}}
+     {{form.Dept }}
+     <br>
+      <label for="SPS_ID"><font face="Times New Roman" size="4pt" color = "purple">Space Planner ID:</font></label>
+     <br>
+     {{form.SPS}}
+<br>
+     <br>
+
+
+     <input type="submit">
+     </div>
+ </form>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Gate 3 Reporting</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">Missed Gate 3 Deals View</font></h1>
+    </center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+
+
+</style>
+<body>
+
+<hr>
+<table id="myTable" style="width:125%">
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col | replace("_", " ")}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        {% for col in cols %}
+        <td> {{row[col]}} </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+
+<hr>
+{% endblock %}

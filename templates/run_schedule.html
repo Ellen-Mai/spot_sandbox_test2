@@ -1,0 +1,27 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Generate Schedule</title>
+{% endblock %}
+
+{% block body %}
+
+
+<br>
+
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Application Run: Generate updated Schedule</center>
+</i></font></h1>
+
+<hr>
+<form action='/generate_schedule' method='POST'>
+    <label for="POG_NUM"><font face="Times New Roman" size="5pt" color="black"><i>Generate Schedule</i></font></label>
+    <input class="form-control" type="text" name='POG_NUM' id='POG_NUM' value="Run this" placeholder="Enter POG" hidden readonly="readonly"
+           aria-label="Enter title">
+    <p><font color = "black" face="Times New Roman" size="3.5pt"><b>A new schedule will be generated encompassing changes that include but aren't limited to - POG Build days, category ownership,
+        Gate 3 dates, holidays and so on. Schedule for future dates will be cleared and a new schedule will be generated. Order of preference - Miscellaneous tasks, O builds, and V builds (includes days needed for ESL)</b></font></p>
+    <input class="btn btn-success" type='submit' value='Generate Schedule'>
+
+</form>
+<hr>
+{% endblock %}

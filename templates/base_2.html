@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Scheduling</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style_sidebar.css') }}">
+</head>
+<body>
+
+<div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+        <div class="custom-menu">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+            </button>
+        </div>
+        <div class="img bg-wrap text-center py-4"
+             style="background-image: url({{ url_for('static', filename='images/bg_1.jpg') }});">
+            <div class="user-logo">
+                <div class="img"
+                     style="background-image: url({{ url_for('static', filename='images/ctc.jpg') }});"></div>
+                <h3><font face="Times New Roman" color="white" size="6pt"><b>Sidebar Menu</b></font></h3>
+            </div>
+        </div>
+        <ul class="list-unstyled components mb-5">
+            <li class="active">
+                <a href="/home"><span class="fa fa-home mr-4"></span>Home</a>
+            </li>
+
+            <li class="active">
+                <a href="/schedule/sps_dept"><span class="fa fa-calendar-check-o mr-3"><small
+                        class="d-flex align-items-center justify-content-center"></small></span> View Schedule</a>
+            </li>
+
+            <li class="active">
+                <a href="/holidays"><span class="fa fa-calendar mr-3"><small
+                        class="d-flex align-items-center justify-content-center"></small></span> View Holidays</a>
+            </li>
+            <li class='active'>
+                <a href="/holidays/add"><span class="fa fa-edit fa-fw mr-3"></span>Update Holidays</a>
+            </li>
+            <li class='active'>
+                <a href="/schedule/misc"><span class="fa fa-calendar-plus-o mr-3"></span>Update Misc schedule</a>
+            </li>
+            <li class="active">
+                <a href="/spsdepts"><span class="fa fa-id-badge mr-3"></span> Update SPS Info</a>
+            </li>
+            <li class="active">
+                <a href="/pogs/find"><span class='fa fa-th mr-3'></span>POGs</a>
+            </li>
+            <li class="active">
+                <a href="/deals"><span class='fa fa-info-circle mr-3'></span>Deals</a>
+            </li>
+            <li class="active">
+                <a href="/pswd_chg"><span class='fa fa-lock mr-3'></span>Reset Password</a>
+            </li>
+            <li class="active">
+                <a href="/logout"><span class='fa fa-sign-out mr-3'></span>Logout</a>
+            </li>
+
+        </ul>
+
+        <div class="footer">
+            <p >
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &copy;&nbsp;<a href="https://corp.canadiantire.ca/English/home/default.aspx" target="_blank">Canadian Tire Corporation</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+            </p>
+            <p >   &copy;&nbsp;2020 All rights reserved | This template is made by <a href="https://colorlib.com" target="_blank">Colorlib.com</a></p>
+        </div>
+
+
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content" class="p-4 p-md-5 pt-5">
+
+        <style>
+                                 body {background-image: url({{ url_for('static', filename='images/ctc_blur.jpeg') }});
+                                 background-repeat: no-repeat;
+                                 background-attachment: fixed;
+                                  background-size: cover;}
+
+
+        </style>
+        <div class="container">
+            {% block body %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main_sidebar.js') }}"></script>
+
+
+</body>
+</html>

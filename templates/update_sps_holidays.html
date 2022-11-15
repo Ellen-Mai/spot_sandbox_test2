@@ -1,0 +1,63 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holidays Scheduled</title>
+{% endblock %}
+
+{% block body %}
+
+<br>
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Update Holidays for SPS</center>
+</i></font></h1>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+<hr>
+<form action='/holidays/add' method='POST'>
+    <div class="form-group w-25">
+        <label for="SPS"><font face="Times New Roman" color="purple" size="5pt"><i>Select SPS</i></font></label>
+        <select class="form-control" name='SPS' id="SPS">
+            {% for name in sps_names_list %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="START_DATE"><font face="Times New Roman" size="5pt" color="purple"><i>Enter Start
+            Date:</i></font></label>
+        <input class="form-control" type="date" name='START_DATE' id='START_DATE' placeholder="Enter Start Date"
+               aria-label="Enter Start Date" required>
+        <br>
+        <label for="END_DATE"><font face="Times New Roman" size="5pt" color="purple"><i>Enter End
+            Date:</i></font></label>
+        <input class="form-control" type="date" name='END_DATE' id='END_DATE' placeholder="Enter End Date"
+               aria-label="Enter End Date" required>
+            </div>
+        <br>
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-secondary active">
+      <input type="radio" name="options" id="option1" value = "Holiday" autocomplete="off" checked> <font face="Times New Roman" size="4pt">Update Holiday </font>
+  </label>
+  <label class="btn btn-secondary">
+      <input type="radio" name="options" id="option2" value="Uncheck" autocomplete="off"> <font face="Times New Roman" size="4pt">Uncheck Holiday</font>
+  </label>
+
+</div>
+        <br>
+        <br>
+        <font face='Times New Roman' size="6pt"><input type='submit' class="btn btn-success" value='Update Holiday Schedule'></font>
+
+
+</form>
+<br>
+<hr>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Missed deals summary page</title>
+
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">Update Gate 3 Tracker</font></h1>
+    </center>
+
+</div>
+<style>
+
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 660px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+
+
+</style>
+</head>
+<body>
+
+<hr>
+<table id="myTable" style="width:100%">
+    <tr>
+        <th style="text-align:center">Line review Deal (Link)</th> 
+        <th style="text-align:center">Deal Info (Link)</th>		
+		<th style="text-align:center"> Option 1</th>
+		<th style="text-align:center"> Option 2</th>
+		<th style="text-align:center"> Option 3</th>
+    </tr>
+
+    {% for test in query %}
+    <tr>
+        {% for col in cols %}
+		<td><a href="javascript:window.open('/missed_deals_tab/{{test[col]}}', 'Missed Deal Info', 'width=1200,height=600');">{{test[col]}}</a></td>
+		<td><a href="javascript:window.open('/detailed_tab/{{test[col]}}', 'Deal Info', 'width=1600,height=1000');">Detailed Info</a></td>
+		<td><a class = "btn btn-success" href ='/option_4/{{test[col]}}'>Deal on time</a></td>
+		<td><a class = "btn btn-warning" href ='/option_2/{{test[col]}}'>Proceed with caution</a></td>
+		<td><a class = "btn btn-danger" href ='/option_3/{{test[col]}}'>Gate3 delayed</a></td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+
+{% endblock %}

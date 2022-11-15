@@ -1,0 +1,48 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holidays Scheduled</title>
+{% endblock %}
+
+{% block body %}
+<br>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Get SPS Holidays Schedule for date range</center>
+</i></font></h1>
+
+<hr>
+<form action='/holidays/singlesps' method='POST'>
+   <div class="form-group w-25">
+        <label for="START_DATE"><font face="Times New Roman" size="5pt"><i>Enter Start Date:</i></font></label>
+        <input class="form-control" type="date" name='START_DATE' id='START_DATE' placeholder="Enter End Date" value = {{dt}}
+               aria-label="Enter START Date" required>
+        <br>
+        <label for="END_DATE"><font face="Times New Roman" size="5pt"><i>Enter End Date:</i></font></label>
+        <input class="form-control" type="date" name='END_DATE' id='END_DATE' placeholder="Enter End Date" value = {{dt}}
+               aria-label="Enter End Date" required>
+        <br>
+       <label for="SPS"><font face="Times New Roman" color="purple" size="5pt"><i>Select SPS</i></font></label>
+        <select class="form-control" name='SPS' id="SPS">
+            {% for name in sps_names_list %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br>
+    <input class="btn btn-info" type='submit' value='Get Holiday Schedule'>
+
+</form>
+<hr>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holiday Calendar</title>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $('#table_id td.y_n').each(function(){
+        if ($(this).text() == 'N') {
+            $(this).css('background-color','#f00');
+        }
+    });
+});
+
+</script>
+
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">Calendar schedule for {{sps_name}}</font></h1></center>    
+</div>
+
+<p align="justify"><font face="Times New Roman" color="black" size="4pt">The Deal column contains clickable hyperlinks. Detailed information pertaining to which SPS is building a POG that's part of the deal
+is available here. </font></p>
+	
+<style>
+	
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+</style>
+
+<hr>
+<table id="myTable" style = "width:125%">
+
+    <tr>
+        {% for col in sudo_cols %}
+        <th style="text-align:center">{{col}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for test in tests %}
+    <tr>
+        
+        <td class="y_n">{{test.DAY_DATE}}</td>
+		<td class="y_n">{{test.DAY_WKDAY_SHNM}}</td>
+		<td><a href="javascript:window.open('/detailed_tab/{{test.LR_Deal}}', 'Deal Info', 'width=1600,height=1000');">{{test.LR_Deal}}</a></td>
+		<td class="y_n">{{test.MERCH_RELEASE}}</td>
+		<td class="y_n">{{test.POG_NUM}}</td>
+		<td class="y_n">{{test.POG_DESC}}</td>
+		<td class="y_n">{{test.BUILD_TYPE}}</td>
+		<td class="y_n">{{test.CAT_OWNER}}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $('#myTable td.y_n').each(function(){
+        if ($(this).text().includes('OPOG')) {
+            $(this).css('background-color','#FFA07A');
+        }
+		if ($(this).text().includes('ORDERING_PPK')) {
+            $(this).css('background-color','#FFA07A');
+        }
+        if ($(this).text().includes('VPOG')) {
+            $(this).css('background-color','#87CEFA');
+        }
+        if ($(this).text().includes('ESL')) {
+            $(this).css('background-color','#0cdf52');
+        }
+        if ($(this).text().includes('EXTD')) {
+            $(this).css('background-color','#f9a2ef');
+        }
+    });
+});
+
+</script>
+
+
+{% endblock %}

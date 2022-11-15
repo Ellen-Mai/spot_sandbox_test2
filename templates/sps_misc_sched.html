@@ -1,0 +1,68 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Miscellaneous schedule</title>
+{% endblock %}
+
+{% block body %}
+<br>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Update Miscellaneous schedule</center>
+</i></font></h1>
+
+<hr>
+<a style = "display:inline" class = "btn btn-info float-right" href = "/view_misc">View Misc deals</a>
+<form action='/schedule/misc' method='POST'>
+   <div class="form-group w-25">
+       <label for="DEAL"><font face="Times New Roman" color="purple" size="5pt"><i>Enter Deal Id:</i></font></label>
+        <input class="form-control" type="text" name='DEAL' id='DEAL' required placeholder="Enter Deal Id">
+        <label for="START_DATE"><font face="Times New Roman" color="purple" size="5pt"><i>Enter Start Date:</i></font></label>
+        <input class="form-control" type="date" name='START_DATE' id='START_DATE' required placeholder="Enter End Date" value = {{dt}}
+               aria-label="Enter START Date" required>
+        <br>
+        <label for="END_DATE"><font face="Times New Roman" color="purple" size="5pt"><i>Enter End Date:</i></font></label>
+        <input class="form-control" type="date" name='END_DATE' id='END_DATE' required placeholder="Enter End Date" value = {{dt}}
+               aria-label="Enter End Date" required>
+        <br>
+       <label for="TASK"><font face="Times New Roman" color="purple" size="5pt"><i>Select Task Type</i></font></label>
+            <select class="form-control" name='TASK' id="TASK" >
+                <option>FISHING</option>
+                <option>WEED AND FERT</option>
+                <option>OTHER</option>
+                <option>PILOT</option>
+				<option>OPOG</option>
+                <option>VPOG</option>
+				<option>ESL</option>
+				<option>PC</option>
+            </select>
+       <br>
+        <label for="DESC"><font face="Times New Roman" color="purple" size="4.5pt"><i>Task Description (POG#):</i></font></label>
+        <input class="form-control" type="text" name='DESC' id='DESC' placeholder="Enter Task description"
+               aria-label="Enter Description" >
+       <br>
+       <label for="SPS"><font face="Times New Roman" color="purple" size="5pt"><i>Select SPS</i></font></label>
+        <select class="form-control" name='SPS' id="SPS" required>
+            {% for name in sps_names_list %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br>
+    <input class="btn btn-info" type='submit' value='Update Misc Schedule'>
+
+</form>
+<hr>
+{% endblock %}

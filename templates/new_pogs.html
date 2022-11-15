@@ -1,0 +1,71 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>New POG and category ownership entry</title>
+{% endblock %}
+
+{% block body %}
+
+<style>
+body {
+  background-image: url({{ url_for('static', filename='images/ctc_blur.jpeg') }});
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+</style>
+
+<h1><font face="Times New Roman"><i>Adding a new POG</i></font></h1>
+
+    <hr>
+    <form action = '/pogs/new' method = 'POST'>
+        <div class="form-group w-25">
+        <label for="POG_NUM"><font face="Times New Roman" color="purple" size="4pt"><i>Enter new POG Number (xxx2xx):</i></font></label>
+     <input class="form-control" type="text" minlength="6" maxlength="6" name = 'POG_NUM' id ='POG_NUM' placeholder="Enter POG No." aria-label="Enter POG No.">
+     <br>
+        <label for="POG_DESC"><font face="Times New Roman" color="purple" size="4pt"><i>Description:</i></font></label>
+    <input class="form-control" type="text" name = 'POG_DESC' id ='POG_DESC' placeholder="Enter POG Description" aria-label="Enter description">
+    <br>
+    <label for="SPS"><font face="Times New Roman" color="purple" size="4pt"><i>Select Category Owner</i></font></label>
+    <select class="form-control" name='SPS' id="SPS">
+            {% for name in sps_names_list %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
+    <br>
+	<label for="SPS_V"><font face="Times New Roman" color="purple" size="4pt"><i>Select V Build Owner</i></font></label>
+    <select class="form-control" name='SPS_V' id="SPS_V">
+            {% for name in sps_names_list %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
+    <br>
+        <label for="Recco_O"><font face="Times New Roman" color="purple" size="4pt"><i>Enter Recco O days:</i></font></label>
+    <input class="form-control" type="number" name = 'Recco_O' id ='Recco_O' value= 0 max = "5" aria-label="Enter Recco Or">
+    <br>
+        <label for="Recco_V"><font face="Times New Roman" color="purple" size="4pt"><i>Enter Recco V days:</i></font></label>
+    <input class="form-control" type="number" name = 'Recco_V' id ='Recco_V' value= 0 aria-label="Enter Recco Vr">
+    <br>
+    <label for="ESL_DIFF_INDEX"><font face="Times New Roman" color="purple" size="4pt"><i>Select ESL</i></font></label>
+            <select class="form-control" name='ESL_DIFF_INDEX' id="ESL_DIFF_INDEX" >
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+    <br>
+            <label for="Extd_build"><font face="Times New Roman" color="purple" size="4pt"><i>Enter Extended build days:</i></font></label>
+    <input class="form-control" type="number" name = 'Extd_build' id ='Extd_build' value= 0 aria-label="Enter Extended build days">
+    <br>
+                <label for="Difficulty"><font face="Times New Roman" color="purple" size="4pt"><i>Select Difficulty</i></font></label>
+            <select class="form-control" name='Difficulty' id="Difficulty" >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+            <br>
+    <input class="btn btn-success" type='submit' value = '+ Add new POG'>
+        </div>
+    </form>
+    <hr>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Edit SPS</title>
+{% endblock %}
+
+{% block body %}
+
+<h1><font face="Times New Roman" size="7pt" color="purple">
+    <center>Editing Deal Information</center>
+</font></h1>
+
+
+<hr>
+<br>
+
+<form action='/deals/edit/{{info.LR_ID}}>' method='POST'>
+    {% for x in info %}
+    <div class="form-group w-25">
+        <br>
+        <label for="LR_ID"><font face="Times New Roman" size="4pt" color="purple">Deal ID:</font></label>
+        <input class="form-control" type="text" name='LR_ID' id='LR_ID' value="{{x.LR_ID}}" readonly aria-label="Enter SPS_ID">
+        <br>
+        <label for="LR_Deal"><font face="Times New Roman" size="4pt" color="purple" size="5pt">LR Deal</i></font></label>
+        <input class="form-control" type="text" name='LR_Deal' id='LR_Deal' readonly value="{{x.LR_Deal}}" >
+        <br>
+        <label for="POG"><font face="Times New Roman" size="4pt" color="purple">Enter POG to be added</font></label>
+        <input class="form-control" type="text" name='POG' id='POG'  aria-label="Enter POG">
+        <br>
+        <label for="ORD_PPK"><font face="Times New Roman" size="4pt" color="purple">Enter if Ordering/PPK</font></label>
+         <select class="form-control" name='ORD_PPK'>
+            <option>N</option>
+            <option>Y</option>
+        </select>
+        <br>
+        <input class="form-control" type="date" name='O_start_date' id='O_start_date' hidden readonly  value = "{{x.O_start_date}}" >
+        <input class="form-control" type="date" name='O_end_date' id='O_end_date' hidden readonly value = "{{x.O_end_date}}"  >
+        <input class="form-control" type="date" name='Dealer_mail_date' id='Dealer_mail_date' hidden readonly value = "{{x.Dealer_mail_date}}" >
+        <input class="form-control" type="date" name='Target_store_setup' id='Target_store_setup' hidden readonly  value = "{{x.Target_store_setup}}" >
+        <input class="form-control" type="date" name='MERCH_RELEASE' id='MERCH_RELEASE' hidden readonly  value = "{{x.MERCH_RELEASE}}" >
+        <input class="form-control" type="text" name='CHANGE_IND' id='CHANGE_IND' hidden readonly  value = "{{x.CHANGE_IND}}" >
+
+        <input type='submit' class="btn btn-primary" value='+ Add POG'>
+    </div>
+{% endfor %}
+</form>
+{% endblock %}

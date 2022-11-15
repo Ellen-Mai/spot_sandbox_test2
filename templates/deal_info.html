@@ -1,0 +1,72 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holiday Calendar</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">Deal Information</font></h1>
+    </center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+</style>
+</head>
+<body>
+
+
+<table id="myTable" style="width:160%">
+
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col | replace("_", " ")}}</th>
+        {% endfor %}
+        <th style="text-align:center">Add/Delete POG </th>
+        <th style="text-align:center">Edit Dates</th>
+        <th style="text-align:center">Prioritize</th>
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        {% for col in cols %}
+        <td>{{row[col]}}</td>
+        {% endfor %}
+        <td><a class = "btn btn-primary" href ='/deals/edit/{{row.LR_ID}}'>Add</a><a class = "btn btn-danger" href ='/deals/delete/{{row.LR_ID}}/{{row.POG_NUM}}'>Delete</a></td>
+        <td><a class = "btn btn-primary" href ='/deals/edit_dates/{{row.LR_ID}}'>Modify</a></td>
+        <td><a class = "btn btn-success" href ='/deals/priority/{{row.LR_Deal}}/{{row.POG_NUM}}'>Priority</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<hr>
+{% endblock %}

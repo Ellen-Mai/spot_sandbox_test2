@@ -1,0 +1,90 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>SPS Department Schedule Calendar</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">SPS Department Calendar</font></h1>
+    </center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+thead, tbody { display: block; }
+
+</style>
+</head>
+<body>
+
+<hr>
+
+<table id="myTable" style="width:320%">
+    <tr>
+        {% for col in sudo_cols %}
+        <th style="text-align:center">{{col}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for test in tests %}
+    <tr>
+        {% for col in cols %}
+        <td  class="y_n">{{test[col]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<hr>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $('#myTable td.y_n').each(function(){
+        if ($(this).text().includes('O-D')) {
+            $(this).css('background-color','#F4A460');
+        }
+        if ($(this).text().includes('V-D')) {
+            $(this).css('background-color','#87CEFA');
+        }
+        if ($(this).text().includes('E-D')) {
+            $(this).css('background-color','#0cdf52');
+        }
+        if ($(this).text().includes('EX-D')) {
+            $(this).css('background-color','#f9a2ef');
+        }
+    });
+});
+
+</script>
+
+<a style = "display:inline" class = "fa fa-reply " href = "/schedule/sps_dept"> <font size="4pt">Go Back</font></a>
+
+{% endblock %}

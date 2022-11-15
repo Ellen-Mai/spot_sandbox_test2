@@ -1,0 +1,109 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>SPS Schedule View</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">SPS Schedule View</font></h1>
+    </center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+
+
+</style>
+<body>
+<input type="text"  style="width: 100px" id="myInput" onkeyup="myFunction()" placeholder="Filter by POG.." title="Type in a name">
+<hr>
+<table id="myTable" style="width:120%">
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col | replace("_", " ")}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for row in data %}
+    <tr>
+        {% for col in cols %}
+        <td class="y_n">{{row[col]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $('#myTable td.y_n').each(function(){
+        if ($(this).text() == 'OPOG') {
+            $(this).css('background-color','#FFA07A');
+        }
+         if ($(this).text() == 'VPOG') {
+            $(this).css('background-color','#87CEFA');
+        }
+        if ($(this).text() == 'ESL') {
+            $(this).css('background-color','#0cdf52');
+        }
+        if ($(this).text() == 'EXTD') {
+            $(this).css('background-color','#f9a2ef');
+        }
+    });
+});
+
+</script>
+
+<hr>
+{% endblock %}

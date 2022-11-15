@@ -1,0 +1,41 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Line Review Deals</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<br>
+<center><h1><font face="Times New Roman" color ="purple" size="6pt">Reset Password</font></h1></center>
+
+    <hr>
+    <form action = '/pswd_chg' method = 'POST'>
+        <div class="form-group w-25">
+            <label for="Username"><font face="Times New Roman" color ="purple" size = "5pt">Username</font></label>
+     <input class="form-control" type="text" name = 'Username' id ='Username' value ={{username}} readonly >
+     <br>
+      <label for="pass_1"><font face="Times New Roman" color ="purple" size = "5pt">Enter new password</font></label>
+     <input class="form-control" type="password" name = 'pass_1' id = 'pass_1' placeholder="Enter New Password" required >
+     <br>
+      <label for="pass_2"><font face="Times New Roman" color ="purple" size = "5pt">Confirm password</font></label>
+     <input class="form-control" type="password" name = 'pass_2' id = 'pass_2' placeholder="Enter New Password" required >
+     <br>
+    <input class="btn btn-primary" type='submit' name="action" value = 'Submit'>
+       </div>
+    </form>
+    <hr>
+{% endblock %}

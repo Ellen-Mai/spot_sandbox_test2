@@ -1,0 +1,53 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holidays Scheduled</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Get Holidays Schedule for date range</center>
+</i></font></h1>
+<a style = "display:inline" class = "btn btn-info float-right" href = "/holidays/singlesps">By SPS only</a>
+<br>
+<hr>
+<form action='/holidays' method='POST'>
+    <div class="form-group w-25">
+        <label for="START_DATE"><font face="Times New Roman" size="5pt"><i>Enter Start Date:</i></font></label>
+        <input class="form-control" type="date" placeholder="Enter Start Date" value = {{dt}} name='START_DATE' id='START_DATE'
+               aria-label="Enter Start Date">
+        <br>
+        <label for="END_DATE"><font face="Times New Roman" size="5pt"><i>Enter End Date:</i></font></label>
+        <input class="form-control" type="date" name='END_DATE' id='END_DATE' placeholder="Enter End Date" value = {{dt}}
+               aria-label="Enter End Date">
+        <br>
+        <div class="form-group">
+            <label for="sel1"><font face="Times New Roman" size="5pt"><i>Select Department</i></font></label>
+            <select class="form-control" name = "Dept" id="Dept" >
+                <option>Seasonal_Auto</option>
+                <option>Playing_Kids</option>
+                <option>Living_Fixing</option>
+				<option>Party_City</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <input class="btn btn-info" type='submit' value='Get Holiday Schedule'>
+
+</form>
+<hr>
+{% endblock %}

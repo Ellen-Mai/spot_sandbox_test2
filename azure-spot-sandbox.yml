@@ -1,0 +1,95 @@
+# Python to Linux Web App on Azure
+# Build your Python project and deploy it to Azure as a Linux Web App.
+# Change python version to one thats appropriate for your application.
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+- main 
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureServiceConnectionId: 'corp-dev-010-5te9-cc' #'{{ azureServiceConnectionId }}'
+
+  # Web app name
+  WebAppName: 'spot-app-base01' #'{{ WebAppName }}'
+
+  # Agent VM image name
+  #vmImageName: 'ctc-shared-pool-ubuntu1804'
+  #pool: "ctc-shared-pool-ubuntu1804"  
+
+
+  # Environment name
+  WebAppEnvironmentName: 'spot-app-base01' #'{{ WebAppName }}'
+
+  # Project root folder. Point to the folder containing manage.py file.
+  WebAppProjectRoot: $(System.DefaultWorkingDirectory)/mpm_dev_cc_app/mpm_dev_cc_web_app/
+
+  # Python version: 3.9
+  pythonVersion: '3.9'
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: BuildJob
+    pool:
+      name: ctc-shared-pool-ubuntu1804
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
+
+    - script: |
+        python -m venv antenv
+        source antenv/bin/activate
+        python -m pip install --upgrade pip
+        pip install setup
+        pip install -r requirements.txt
+    
+      workingDirectory: $(WebAppProjectRoot)
+      displayName: "Install requirements"
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(WebAppProjectRoot)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: 'Upload package'
+      artifact: drop
+
+- stage: Deploy
+  displayName: 'Deploy Web App'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeploymentJob
+    pool:
+      name: ctc-shared-pool-ubuntu1804
+    environment: $(WebAppEnvironmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Use Python version'
+
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App : $(WebAppName)'
+            inputs:
+              azureSubscription: $(azureServiceConnectionId)
+              appType: functionAppLinux
+              appName: $(WebAppName)
+              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+
+          # The following parameter is specific to the Flask example code. You may
+          # or may not need a startup command for your app.
+
+          #startUpCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app.py'   

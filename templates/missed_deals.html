@@ -1,0 +1,45 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Gate 3 tracker</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+
+
+    <form action = '/missed_deals' method = 'POST'>
+	      
+   
+            <h1><font face="Times New Roman" color ="purple" size="6pt"><center>Gate 3 Tracker</center></font></h1>
+			<hr>
+			<h4><font face="Times New Roman" color ="black" size="4pt">The purpose of the Gate 3 tracker is to have a record of which deals had their
+			 Gate 3s delayed and the reason for the delay. The "Get Deals" button will pull a list of all the deals that had their Gate 3s within the date range. The tracker cannot be updated for deals whose Gate 3s haven't come to pass yet.</font></h4>
+			 <hr>
+		<div class="form-group w-25">	
+            <label for="START_DATE"><font face="Times New Roman" color ="purple" size="4.5pt"><i>Enter Start Date:</i></font></label>
+        <input class="form-control" type="date" placeholder="Enter Start Date"  name='START_DATE' id='START_DATE' required
+               aria-label="Enter Start Date">
+        <br>
+        <label for="END_DATE"><font face="Times New Roman" color ="purple" size="4.5pt"><i>Enter End Date:</i></font></label>
+        <input class="form-control" type="date" name='END_DATE' id='END_DATE' placeholder="Enter End Date" required
+               aria-label="Enter End Date">
+            <br>
+     <input class="btn btn-info" type='submit' name="action" value = 'Get deals'>
+       </div>
+    </form>
+    <hr>
+{% endblock %}

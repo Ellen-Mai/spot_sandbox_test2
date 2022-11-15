@@ -1,0 +1,42 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Deal Gate3 info</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<br>
+<center><h1><font face="Times New Roman" color ="purple" size="6pt">Update Information on missing samples</font></h1></center>
+
+    <hr>
+    <form action = '/update_gate3_dt' method = 'POST'>
+        <div class="form-group w-25">
+	<label for="deal"><font face="Times New Roman" color ="purple" size = "5pt">Deal</font></label>
+     <input class="form-control" type="text" name = 'deal' id ='deal' value = "{{deal}}" readonly>
+     <br>
+	<label for="reason"><font face="Times New Roman" color ="purple" size = "5pt">Reason</font></label>
+     <input class="form-control" type="text"  name = 'reason' id ='reason' value = "{{reason}}" readonly>
+     <br>
+     <label for="ea_skus"><font face="Times New Roman" color ="purple" size = "5pt">Enter tentative Gate3 date</font></label>
+     <input class="form-control" type="date" name = 'gate3_dt' id ='gate3_dt' required placeholder="Enter tentative Gate3 date" aria-label="Enter tentative Gate3 date">
+     <br>
+
+    <input class="btn btn-primary" name = 'action' type='submit' value = 'Submit'>
+                  
+    </form>
+    <hr>
+{% endblock %}

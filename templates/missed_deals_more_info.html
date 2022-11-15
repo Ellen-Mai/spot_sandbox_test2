@@ -1,0 +1,59 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Deal Gate3 info</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<br>
+<center><h1><font face="Times New Roman" color ="purple" size="6pt">Update sample information for deal</font></h1></center>
+
+    <hr>
+    <form action = '/update_missed_skus' method = 'POST'>
+        <div class="form-group w-25">
+	<label for="deal"><font face="Times New Roman" color ="purple" size = "5pt">Deal</font></label>
+     <input class="form-control" type="text" name = 'deal' id ='deal' value = "{{deal}}" readonly>
+     <br>
+	<label for="reason"><font face="Times New Roman" color ="purple" size = "5pt">Reason</font></label>
+     <input class="form-control" type="text"  name = 'reason' id ='reason' value = "{{reason}}" readonly>
+     <br>
+     <label for="ea_skus"><font face="Times New Roman" color ="purple" size = "4pt">Enter number of EA SKUs</font></label>
+     <input class="form-control" type="number" step="1" name = 'ea_skus' id ='ea_skus' required placeholder="Enter number of EA SKUs" aria-label="Enter number of EA SKUs.">
+     <br>
+	 <label for="ppk_skus"><font face="Times New Roman" color ="purple" size = "4pt">Enter number of Prepack SKUs</font></label>
+     <input class="form-control" type="number" step="1" name = 'ppk_skus' id ='ppk_skus' required placeholder="Enter number of PPK SKUs" aria-label="Enter number of PPK SKUs.">
+     <br>
+	 <label for="new_skus"><font face="Times New Roman" color ="purple" size = "4pt">Enter number of new SKUs</font></label>
+     <input class="form-control" type="number" step="1" name = 'new_skus' id ='new_skus' required placeholder="Enter number of new SKUs" aria-label="Enter number of new SKUs.">
+     <br>
+	 <label for="mock_skus"><font face="Times New Roman" color ="purple" size = "4pt">Enter number of mock SKUs</font></label>
+     <input class="form-control" type="number" step="1" name = 'mock_skus' id ='mock_skus' required placeholder="Enter number of mock SKUs" aria-label="Enter number of mock SKUs.">
+     <br>
+	 <label for="actual_skus"><font face="Times New Roman" color ="purple" size = "4pt">Enter number of actual SKUs</font></label>
+     <input class="form-control" type="number" step="1" name = 'actual_skus' id ='actual_skus' required placeholder="Enter number of actual SKUs" aria-label="Enter number of actual SKUs.">
+     <br>
+	 <label for="samples_provided"><font face="Times New Roman" color ="purple" size = "4pt">Enter number of samples provided</font></label>
+     <input class="form-control" type="number" step="1" name = 'samples_provided' id ='samples_provided' required placeholder="Enter samples provided" aria-label="Enter missing SKUs.">
+     <br>
+	 <label for="total"><font face="Times New Roman" color ="purple" size = "4pt">Enter total no. of SKUs</font></label>
+     <input class="form-control" type="number" step="1" name = 'total' id ='total' required placeholder="Enter total SKUs" aria-label="Enter missing SKUs.">
+     <br>
+    <input class="btn btn-primary" name = 'action' type='submit' value = 'Submit'>
+                  
+    </form>
+    <hr>
+{% endblock %}

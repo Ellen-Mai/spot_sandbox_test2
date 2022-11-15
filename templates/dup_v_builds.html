@@ -1,0 +1,78 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holidays Scheduled</title>
+{% endblock %}
+
+{% block body %}
+
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">All V builds with multiple builders.</font></h1></center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+</style>
+</head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<hr>
+
+<table style="width:100%">
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for x in all_dup_builds %}
+    <tr>
+	    <td><a href='/detailed_tab/{{x.DEAL}}' target="_blank">{{x.DEAL}}</a></td>
+        <td><a  href ='/pog_info/{{x.POG_NUM}}' target="_blank">{{x.POG_NUM}}</a></td>
+        <td>{{x.POG_DESC}}</td>
+        <td>{{x.Department}}</td>
+        <td>{{x.MERCH_RELEASE}}</td>
+        <td>{{x.SPS_Count}}</td>
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+{% endblock %}

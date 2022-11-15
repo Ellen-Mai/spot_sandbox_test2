@@ -1,0 +1,160 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holiday Calendar</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">Deal Information</font></h1>
+    </center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+</style>
+</head>
+<body>
+
+<input type="text"  style="width: 100px" id="myInput" onkeyup="myFunction()" placeholder="Filter by Deal." title="Type in a name">
+&nbsp;&nbsp;&nbsp;
+<input type="text"  style="width: 100px" id="Input" onkeyup="dep()" placeholder="Filter by Dept." title="Type in a dept">
+&nbsp;&nbsp;&nbsp;
+<input type="text"  style="width: 100px" id="SPS" onkeyup="sps()" placeholder="Filter by SPS." title="Search by SPS">
+<hr>
+
+<table id="myTable" style="width:150%">
+
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col | replace("_", " ")}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for row in data %}
+    <tr>        
+        <td><a href="javascript:window.open('/detailed_tab/{{row.LR_Deal}}', 'Deal Info', 'width=1600,height=1000');">{{row.LR_Deal}}</a></td>
+		<td class="home">{{row.Department}}</td>
+		<td><a href="javascript:window.open('/pog_info/{{row.POG_NUM}}', 'POG Info', 'width=600,height=800');">{{row.POG_NUM}}</a></td>
+		<td>{{row.POG_DESC}}</td>
+		<td>{{row.SPS}}</td>
+		<td>{{row.O_start_date}}</td>
+		<td>{{row.MERCH_RELEASE}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+<script>
+function dep() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("Input");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+<script>
+function sps() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("SPS");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[4];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $('#myTable td.home').each(function(){
+        if ($(this).text().includes('Living')) {
+            $(this).css('background-color','#F090B8');
+        }
+        if ($(this).text().includes('Seasonal')) {
+            $(this).css('background-color','#2FC8DE');
+        }
+        if ($(this).text().includes('Playing')) {
+            $(this).css('background-color','#BBF1AA');
+        }
+		if ($(this).text().includes('Party')) {
+            $(this).css('background-color','#F7BEB7');
+        }
+    });
+});
+
+</script>
+
+<hr>
+{% endblock %}

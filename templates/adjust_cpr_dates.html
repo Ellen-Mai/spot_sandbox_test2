@@ -1,0 +1,27 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Adjust CPR dates</title>
+{% endblock %}
+
+{% block body %}
+
+
+<br>
+
+<h1><font face="Times New Roman" color="purple"><i>
+    <center>Adjust CPR Dates</center>
+</i></font></h1>
+
+<hr>
+<form action='/adjust_cpr_dates' method='POST'>
+    <label for="POG_NUM"><font face="Times New Roman" size="5pt" color="black"><i>Modify CPR dates</i></font></label>
+    <input class="form-control" type="text" name='POG_NUM' id='POG_NUM' value="Run this" placeholder="Enter POG" hidden readonly="readonly"
+           aria-label="Enter title">
+    <p><font color = "black" face="Times New Roman" size="3.5pt"><b>Submitting a run request will update CPR dates. Dates that were manually edited will not be impacted by this
+    operation.</b></font></p>
+    <input class="btn btn-success" type='submit' value='Submit'>
+
+</form>
+<hr>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>New POG and category ownership entry</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<br>
+<a style = "display:inline" class = "btn btn-success float-right" href = "/pogs/new">+ New POG</a>
+<center><h1><font face="Times New Roman" color ="purple" size="6pt">Get POG Information</font></h1></center>
+
+    <hr>
+    <form action = '/pogs/find' method = 'POST'>
+        <div class="form-group w-25">
+            <label for="POG_NUM"><font face="Times New Roman" color ="purple" size = "5pt">Enter POG No.(xxx2xx)</font></label>
+     <input class="form-control" type="text" minlength="6" maxlength="6" name = 'POG_NUM' id ='POG_NUM' placeholder="Enter POG No." aria-label="Enter POG No.">
+     <br>
+    <input class="btn btn-primary" name = 'action' type='submit' value = 'Submit'>
+                  <hr>
+                    <div class="form-group">
+        <label for="SPS"><font face="Times New Roman" color="purple" size="5pt"><i>Select SPS for owned POGs</i></font></label>
+        <select class="form-control" name='SPS' id="SPS">
+            {% for name in sps_names_list %}
+            <option>{{ name }}</option>
+            {% endfor %}
+        </select>
+                        <br>
+            <input class="btn btn-primary" name='action' type='submit' value = 'Get POGs'>
+        </div>
+        </div>
+
+    </form>
+    <hr>
+{% endblock %}

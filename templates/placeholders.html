@@ -1,0 +1,75 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holidays Scheduled</title>
+{% endblock %}
+
+{% block body %}
+
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">All placeholder POGs for upcoming schedule</font></h1></center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+</style>
+</head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+
+{% for category, message in messages %}
+<div class="alert alert-{{category}} alert-dismissible">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  {{message}}
+</div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+<hr>
+<p align="justify"><font face="Rockwell" color="purple" size="4pt">The below table lists all the POGs that have been locked by the SPOT administrator. Any schedule changes will not affect these POGs. Please review SPS' vacation and/or any assigned miscellaneous tasks before locking POG builds to avoid any dicrepancies.</font></a></font></p>
+<table style="width:110%">
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col  | replace("_", " ")}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for test in all_sps %}
+    <tr>
+        {% for col in cols %}
+        <td>{{test[col]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+{% endblock %}

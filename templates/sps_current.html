@@ -1,0 +1,64 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holidays Scheduled</title>
+{% endblock %}
+
+{% block body %}
+
+
+<div>
+    <br>
+   <h1 style="display:inline"><font face="Times New Roman" color="purple">Current SPS and departments</font></h1>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+</style>
+</head>
+<body>
+
+<hr>
+<table style="width:65%">
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col | replace("_", " ")}}</th>
+        {% endfor %}
+        <th style="text-align:center">Modify</th>
+    </tr>
+
+    {% for x in all_sps %}
+    <tr>
+        {% for col in cols %}
+        <td>{{x[col]}}</td>
+        {% endfor %}
+        <td><a class = "btn btn-primary" href ='/spsdepts/edit/{{x.SPS_ID}}'>Edit</a></td>
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+{% endblock %}

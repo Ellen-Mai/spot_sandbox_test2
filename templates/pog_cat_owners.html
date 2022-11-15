@@ -1,0 +1,72 @@
+{% extends 'base_2.html' %}
+
+{% block head %}
+<title>Holiday Calendar</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <br>
+    <center><h1 style="display:inline"><font face="Times New Roman" color="purple">POGs owned by SPS</font></h1>
+
+    </center>
+
+</div>
+<style>
+
+table {
+  color: #333;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;font-size: 11pt;
+  width: 640px;
+  /* Table reset stuff */
+  border-collapse: collapse; border-spacing: 0;
+}
+
+td, th {  border: 0 none; height: 30px; }
+
+th {
+  /* Gradient Background */
+	background: linear-gradient(#333 0%,#444 100%);
+	color: #FFF; font-weight: bold;
+	height: 40px;
+}
+
+td { background: #FAFAFA; text-align: center; }
+
+/* Zebra Stripe Rows */
+
+tr:nth-child(even) td { background: #EEE; }
+tr:nth-child(odd) td { background: #FDFDFD; }
+
+
+
+</style>
+</head>
+<body>
+
+<hr>
+<table style="width:100%">
+    <tr>
+        {% for col in cols %}
+        <th style="text-align:center">{{col | replace("_", " ")}}</th>
+        {% endfor %}
+    </tr>
+
+    {% for test in tests %}
+    <tr>
+        <td><a  href ='/pog_info/{{test.POG_NUM}}' target="_blank">{{test.POG_NUM}}</a></td>
+        <td>{{test.POG_DESC}}</td>
+        <td>{{test.SPS}}</td>
+        <td>{{test.Recco_O}}</td>
+        <td>{{test.Recco_V}}</td>
+		<td>{{test.ESL_DIFF_INDEX}}</td>
+		<td>{{test.V_SPS}}</td>
+        <td>{{test.EXTD_BUILD}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+<hr>
+{% endblock %}
