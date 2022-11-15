@@ -20,10 +20,10 @@ no_perm = 'You are not allowed to perform this action.'
 #Setting app and db configs.
 app = Flask(__name__)
 app._static_folder = 'static/'
-app.config['SECRET_KEY'] = '@fgrf50&!~0lqpt7320@'
+app.config['SECRET_KEY'] = 'KNYdSLvYkUsVvHuPJfsgIQ'
 db = SQLAlchemy(app)
 
-#KNYdSLvYkUsVvHuPJfsgIQ
+#   @fgrf50&!~0lqpt7320@
 
 #Classes of all tables existing in SPOT DB.
 class CPR_RAW(db.Model):
