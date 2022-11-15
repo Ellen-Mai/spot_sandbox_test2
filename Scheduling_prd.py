@@ -16,7 +16,7 @@ pwd = my_list[1]
 con = p.connect(database="scheduling", user="ctcadmin@mpm-spot-db", password=pwd, host="mpm-spot-db.mysql.database.azure.com", port="3306")
 cur = con.cursor()
 
-engine = create_engine('postgresql://' + user + ':' + pwd + '@host/scheduling')
+engine = create_engine('mysql://' + user + ':' + pwd + '@host/scheduling')
 
 #Captures deals that need to be worked on
 df2 = pd.read_sql('''Select * from public."DEAL_FULL_INFO_VW" where "Deal_prefix" not in ('0536', '0552') ''', con = engine)
