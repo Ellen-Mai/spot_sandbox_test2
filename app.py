@@ -408,7 +408,7 @@ def adjust_dates_py():
 @app.route('/generate_schedule', methods=['GET', 'POST'])
 @login_required
 def generate_schedule():
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
     df1 = pd.read_sql('''select a.oid as user_role_id , a.rolname as user_role_name, b.roleid as other_role_id , c.rolname as other_role_name from pg_roles a inner join pg_auth_members b on a.oid=b.member inner join pg_roles c on b.roleid=c.oid where c.rolname = 'super_user' ''', con=engine)
     
     super_users = df1['user_role_name'].to_list()
@@ -421,7 +421,7 @@ def generate_schedule():
         #x = subprocess.call(["python", "C:\\Users\\adi.jakka\\Desktop\\Flask\\Scheduling_prd.py", session['username'] + ':' + session['password']], shell=True)
         x = subprocess.call(["python", "C:\\Users\\#svcbc.pp\\SPOT\\Flask\\Scheduling_prd.py", session['username'] + ':' + session['password']], shell=True)
         if x == 0:
-            engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+            engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
             unassign_deals = pd.read_sql('''Select * from public."UNASSIGNED_DATASET"''', con=engine)
             if len(unassign_deals) == 0:
                 engine.dispose()
@@ -439,7 +439,7 @@ def generate_schedule():
 @app.route('/spsdepts', methods=['GET', 'POST'])
 @login_required
 def current_sps():
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
     df1 = pd.read_sql('''select a.oid as user_role_id , a.rolname as user_role_name, b.roleid as other_role_id , c.rolname as other_role_name from pg_roles a inner join pg_auth_members b on a.oid=b.member inner join pg_roles c on b.roleid=c.oid where c.rolname = 'super_user' ''', con=engine)
     
     super_users = df1['user_role_name'].to_list()
@@ -448,7 +448,7 @@ def current_sps():
     if session['username'] not in super_users:
         flash('You are either not allowed to perform this operation or the system encountered an error. Please contact your system admin if this problem persists.', 'danger')
         return redirect('/home')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     cols = SPS_CURRENT.__table__.columns.keys()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
@@ -458,7 +458,7 @@ def current_sps():
 @app.route('/spsdepts/edit/<string:SPS_ID>', methods=['GET', 'POST'])
 def edit_current_sps(SPS_ID):
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         sps_id = request.form['SPS_ID']
         sps = request.form['SPS'].lstrip().rstrip()
         dept = request.form['Department']
@@ -468,7 +468,7 @@ def edit_current_sps(SPS_ID):
         db.session.commit()
         app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
 
-        engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+        engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
         con = p.connect(database="scheduling", user=session['username'], password=session['password'], host="mpm-spot-db.mysql.database.azure.com", port="3306")
         cur = con.cursor()
         eff_dt = int(request.form['EFF_DT'].replace("-", ""))
@@ -488,7 +488,7 @@ def edit_current_sps(SPS_ID):
         return redirect('/spsdepts')
     else:
         dept_list = ['Seasonal_Auto', 'Playing_Kids', 'Living_Fixing', 'Party_City']
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         all_posts = SPS_CURRENT.query.filter_by(SPS_ID=SPS_ID)
         current_dept = SPS_CURRENT.query.filter_by(SPS_ID=SPS_ID).with_entities(SPS_CURRENT.Department).all()[0][0]
         dep_list = [current_dept] + [x for x in dept_list if x!=current_dept]
@@ -500,7 +500,7 @@ def edit_current_sps(SPS_ID):
 @app.route('/holidays/singlesps', methods = ['GET', 'POST'])
 @login_required
 def view_sps_holiday():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -514,7 +514,7 @@ def view_sps_holiday():
         sps_names_list = [sps_names[x] for x in sps_names.keys()]
 
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         sps_name = request.form['SPS']
         sps = [x for x in sps_names if sps_names[x] == sps_name][0]
         end_dt = request.form['END_DATE']
@@ -536,7 +536,7 @@ def view_sps_holiday():
 @login_required
 def view_sps_schedule():
     global sps_name_print
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -549,7 +549,7 @@ def view_sps_schedule():
         sps_names[row.SPS_ID] = row.SPS
     sps_names_list = [sps_names[x] for x in sps_names.keys()]
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         sps_name = request.form['SPS']
         sps_name_print = sps_name
         sps_nm = [x for x in sps_names if sps_names[x] == sps_name][0]
@@ -567,7 +567,7 @@ def view_sps_schedule():
 @app.route('/schedule/sps_dept', methods = ['GET', 'POST'])
 @login_required
 def view_dept_schedule():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -586,7 +586,7 @@ def view_dept_schedule():
             flash('Invalid date range! End date entered is greater than start date.', 'danger')
             return redirect('/schedule/sps_dept')
         if request.form['action'] == 'Get Department Schedule':
-            app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
             dept = request.form['Dept']
             sps_list = sps_dict[dept]
             tests = SCHED_SHORT_INFO.query.filter(SCHED_SHORT_INFO.DAY_DATE >= start_dt,SCHED_SHORT_INFO.DAY_DATE <= end_dt).order_by(SCHED_SHORT_INFO.DAY_ID)   
@@ -599,7 +599,7 @@ def view_dept_schedule():
             app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
             return render_template('sps_dept_schedule.html', tests=tests, cols=cols, sudo_cols=sudo_cols)
         else:
-            app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
             tests = SCHED_SHORT_INFO.query.filter(SCHED_SHORT_INFO.DAY_DATE >= start_dt, SCHED_SHORT_INFO.DAY_DATE <= end_dt).order_by(SCHED_SHORT_INFO.DAY_ID)
             app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
             base_cols = ['DAY_DATE', 'DAY_WKDAY_SHNM']
@@ -619,7 +619,7 @@ def view_dept_schedule():
 @app.route('/holidays', methods=['GET', 'POST'])
 @login_required
 def get_holidays():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -632,7 +632,7 @@ def get_holidays():
         sps_names[row.SPS_ID] = row.SPS
     sps_names_list = [sps_names[x] for x in sps_names.keys()]
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         start_dt = request.form['START_DATE']
         end_dt = request.form['END_DATE']
         if end_dt < start_dt:
@@ -656,7 +656,7 @@ def get_holidays():
 @app.route('/schedule/misc', methods=['GET', 'POST'])
 @login_required
 def update_misc_schedule():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -670,7 +670,7 @@ def update_misc_schedule():
     sps_names_list = [sps_names[x] for x in sps_names.keys()]
 
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         start_dt = request.form['START_DATE']
         end_dt = request.form['END_DATE']
         task = request.form['TASK']
@@ -695,7 +695,7 @@ def update_misc_schedule():
 @app.route('/holidays/add', methods=['GET', 'POST'])
 @login_required
 def update_sps_holidays():
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
     df1 = pd.read_sql('''select a.oid as user_role_id , a.rolname as user_role_name, b.roleid as other_role_id , c.rolname as other_role_name from pg_roles a inner join pg_auth_members b on a.oid=b.member inner join pg_roles c on b.roleid=c.oid where c.rolname = 'super_user' ''', con=engine)
     
     super_users = df1['user_role_name'].to_list()
@@ -704,10 +704,10 @@ def update_sps_holidays():
     if session['username'] not in super_users:
         flash('You are either not allowed to perform this operation or the system encountered an error. Please contact your system admin if this problem persists.', 'danger')
         return redirect('/home')
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
     con = p.connect(database="scheduling", user=session['username'], password=session['password'], host="mpm-spot-db.mysql.database.azure.com", port="3306")
     cur = con.cursor()
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -720,7 +720,7 @@ def update_sps_holidays():
         sps_names[row.SPS_ID] = row.SPS
     sps_names_list = [sps_names[x] for x in sps_names.keys()]
     if request.method == 'POST':        
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         sps_name = request.form['SPS']
         if request.form['options'] == 'Holiday':
             val = 'x'
@@ -758,7 +758,7 @@ def update_sps_holidays():
 @login_required
 def deals():
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         deal_id = request.form['DEAL_NUM']
         if request.form['action'] == 'Detailed info':
             query = DEAL_FULL_INFO_VW.query.filter_by(Deal_prefix=deal_id).all()  # .with_entities(DEAL_FULL_INFO_VW.Deal_prefix, DEAL_FULL_INFO_VW.LR_ID, DEAL_FULL_INFO_VW.LR_Deal, DEAL_FULL_INFO_VW.POG_NUM, DEAL_FULL_INFO_VW.O_start_date, DEAL_FULL_INFO_VW.Dealer_mail_date, DEAL_FULL_INFO_VW.Target_store_setup).all()
@@ -771,7 +771,7 @@ def deals():
             app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
             return render_template('deal_sched_vw.html', cols = cols, data = query_2)
         elif request.form['action'] == 'View':
-            engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+            engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
             df1 = pd.read_sql('''select a.oid as user_role_id , a.rolname as user_role_name, b.roleid as other_role_id , c.rolname as other_role_name from pg_roles a inner join pg_auth_members b on a.oid=b.member inner join pg_roles c on b.roleid=c.oid where c.rolname = 'super_user' ''', con=engine)    
             super_users = df1['user_role_name'].to_list()
             engine.dispose()
@@ -789,7 +789,7 @@ def deals():
             app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
             return render_template('deal_info.html', cols = cols, data=data)
         elif request.form['action'] == 'Placeholder':
-            engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+            engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
             df1 = pd.read_sql('''select a.oid as user_role_id , a.rolname as user_role_name, b.roleid as other_role_id , c.rolname as other_role_name from pg_roles a inner join pg_auth_members b on a.oid=b.member inner join pg_roles c on b.roleid=c.oid where c.rolname = 'super_user' ''', con=engine)    
             super_users = df1['user_role_name'].to_list()
             engine.dispose()
@@ -828,7 +828,7 @@ def priority_pog(LR_Deal, POG_NUM):
 #Add a new deal in SPOT
 @app.route('/add_deal', methods = ['GET', 'POST'])
 def add_deal():
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
     df1 = pd.read_sql('''select a.oid as user_role_id , a.rolname as user_role_name, b.roleid as other_role_id , c.rolname as other_role_name from pg_roles a inner join pg_auth_members b on a.oid=b.member inner join pg_roles c on b.roleid=c.oid where c.rolname = 'super_user' ''', con=engine)
     
     super_users = df1['user_role_name'].to_list()
@@ -848,7 +848,7 @@ def add_deal():
         merch_dt = request.form['MERCH_RELEASE']
         pog_num = request.form['POG']
         deal_pref = lr_deal[:4]
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         new_deal_added = CPR_DEAL_POG_INFO(CPR=cpr, LR_ID=deal_id, LR_Deal=lr_deal, O_start_date=O_start_dt,
                                           O_end_date=O_end_dt, Dealer_mail_date=dealer_mail_dt,
                                           Target_store_setup=target_setup_dt, POG_NUM=pog_num,
@@ -863,7 +863,7 @@ def add_deal():
 @app.route('/detailed_tab/<string:LR_Deal>')
 def get_deal_schedule(LR_Deal):
     deal_id = LR_Deal[:4]
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     query_2 = DEAL_VW_SUMM_SHOW.query.filter_by(Deal_Num = deal_id).all()
     cols = DEAL_VW_SUMM_SHOW.__table__.columns.keys()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
@@ -872,7 +872,7 @@ def get_deal_schedule(LR_Deal):
 @app.route('/missed_deals_tab/<string:LR_Deal>')
 def get_missed_deal_info(LR_Deal):
     deal_id = LR_Deal.replace('/', '_')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     query_2 = DEALS_MISSED_DATES.query.filter_by(DEAL = deal_id).all()
     cols = DEALS_MISSED_DATES.__table__.columns.keys()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
@@ -882,7 +882,7 @@ def get_missed_deal_info(LR_Deal):
 @app.route('/pogs/new', methods=['GET', 'POST'])
 @login_required
 def new_pogs():
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
     df1 = pd.read_sql('''select a.oid as user_role_id , a.rolname as user_role_name, b.roleid as other_role_id , c.rolname as other_role_name from pg_roles a inner join pg_auth_members b on a.oid=b.member inner join pg_roles c on b.roleid=c.oid where c.rolname = 'super_user' ''', con=engine)
     
     super_users = df1['user_role_name'].to_list()
@@ -891,7 +891,7 @@ def new_pogs():
     if session['username'] not in super_users:
         flash('You are either not allowed to perform this operation or the system encountered an error. Please contact your system admin if this problem persists.', 'danger')
         return redirect('/pogs/find')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -904,7 +904,7 @@ def new_pogs():
         sps_names[row.SPS_ID] = row.SPS
     sps_names_list = [sps_names[x] for x in sps_names.keys()]
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         pog_id = request.form['POG_NUM']
         pog_desc = request.form['POG_DESC']
         pog_owner = request.form['SPS']
@@ -929,11 +929,11 @@ def new_pogs():
 @app.route('/deals/edit/<string:LR_ID>', methods=['GET', 'POST'])
 #@login_required
 def edit_deal(LR_ID):
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')
     con = p.connect(database="scheduling", user=session['username'], password=session['password'], host="mpm-spot-db.mysql.database.azure.com", port="3306")
     cur = con.cursor()
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         deal_id = request.form['LR_ID'].rstrip().lstrip()
         lr_deal = request.form['LR_Deal']
         pog_num = request.form['POG']
@@ -958,7 +958,7 @@ def edit_deal(LR_ID):
         app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
         return redirect('/deals')
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         deal_info = CPR_DEAL_POG_INFO.query.filter_by(LR_ID=LR_ID).with_entities(CPR_DEAL_POG_INFO.LR_ID, CPR_DEAL_POG_INFO.LR_Deal, CPR_DEAL_POG_INFO.O_start_date, CPR_DEAL_POG_INFO.O_end_date, CPR_DEAL_POG_INFO.Dealer_mail_date, CPR_DEAL_POG_INFO.Target_store_setup, CPR_DEAL_POG_INFO.CHANGE_IND, CPR_DEAL_POG_INFO.MERCH_RELEASE).distinct().all()
         app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
         return render_template('edit_deal.html', info=deal_info)
@@ -988,7 +988,7 @@ def edit_deal_dates(LR_ID):
         con.close()
         return redirect('/deals')
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         deal_info = CPR_DEAL_POG_INFO.query.filter_by(LR_ID=LR_ID).with_entities(CPR_DEAL_POG_INFO.LR_ID, CPR_DEAL_POG_INFO.LR_Deal, CPR_DEAL_POG_INFO.O_start_date, CPR_DEAL_POG_INFO.O_end_date, CPR_DEAL_POG_INFO.Dealer_mail_date, CPR_DEAL_POG_INFO.MERCH_RELEASE, CPR_DEAL_POG_INFO.Target_store_setup).distinct().all()
         app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
         return render_template('edit_deal_dates.html', info=deal_info)
@@ -1009,7 +1009,7 @@ def del_deal_pog(LR_ID, POG_NUM):
 @app.route('/view_misc', methods = ['GET', 'POST'])
 @login_required
 def view_misc_deals():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     dt_tdy = datetime.today().strftime('%Y-%m-%d')
     qry = MISC_VW.query.all()
     cols = MISC_VW.__table__.columns.keys()
@@ -1021,7 +1021,7 @@ def view_misc_deals():
 @login_required
 def search_page():
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         if request.form['action'] == 'Submit':
             try:
                 pog_id = request.form['POG_NUM']
@@ -1051,7 +1051,7 @@ def search_page():
             cols = [x for x in cols if x not in ['Difficulty', 'V_BUILDER', 'SPS_ID']]
             app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
             return render_template('pog_cat_owners.html', cols = cols, tests = all_pogs)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     sps_dict = {}
@@ -1068,7 +1068,7 @@ def search_page():
 #Fetches POG info
 @app.route('/pog_info/<string:POG_NUM>')
 def view_pog_info(POG_NUM):
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     pog_id = POG_NUM
     pog_info = POG_CAT_OWNERS_VW.query.get_or_404(pog_id)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
@@ -1078,7 +1078,7 @@ def view_pog_info(POG_NUM):
 @app.route('/pogs/delete/<string:POG_NUM>', methods=['GET', 'POST'])
 #@login_required
 def delete_pog(POG_NUM):
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     pog = POG_CAT_OWNERS.query.get_or_404(POG_NUM)
     db.session.delete(pog)
     db.session.commit()
@@ -1091,7 +1091,7 @@ def delete_pog(POG_NUM):
 def edit_pogs(POG_NUM):
     form = Form()
     form1 = Form()
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     pog = POG_CAT_OWNERS.query.get_or_404(POG_NUM)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
     prior_sps_id = pog.SPS_ID
@@ -1100,7 +1100,7 @@ def edit_pogs(POG_NUM):
     prior_diff = pog.Difficulty
     ESL_list = [0,1,2,3]
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         pog.POG_NUM = request.form['POG_NUM']
         pog.POG_DESC = request.form['POG_DESC']
         pog.Recco_O = request.form['Recco_O']
@@ -1115,7 +1115,7 @@ def edit_pogs(POG_NUM):
         flash('POG ' + pog.POG_NUM + ' has been updated successfully.', 'success')
         return redirect('/pogs/find')
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         orig_owner = [(x.SPS_ID, x.SPS) for x in SPS_CURRENT.query.all() if x.SPS_ID==prior_sps_id]
         v_owner = [(x.SPS_ID, x.SPS) for x in SPS_CURRENT.query.all() if x.SPS_ID==prior_vbuilder]
         form.SPS.choices = orig_owner + [(x.SPS_ID, x.SPS) for x in SPS_CURRENT.query.all() if x.SPS_ID!=prior_sps_id]
@@ -1159,7 +1159,7 @@ def show_static_pdf():
 @app.route('/unassigned', methods = ['GET', 'POST'])
 @login_required
 def get_unassigned_builds():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_unassigned = unassigned_vw.query.all()
     cols =  unassigned_vw.__table__.columns.keys()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
@@ -1168,7 +1168,7 @@ def get_unassigned_builds():
 #View schedule by department 
 @app.route('/calendar_view/<string:START_DT>/<string:DEPT>', methods = ['GET', 'POST'])
 def view_cal(START_DT, DEPT):
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_sps = SPS_CURRENT.query.all()
     sps_dict = {}
     for row in all_sps:
@@ -1214,7 +1214,7 @@ def edit_misc_deal(DEAL, TASK, DESC, Id):
         TASK = request.form['TASK']
         DESC = request.form['DESC']
         Id = request.form['Id']
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         all_sps = SPS_CURRENT.query.all()
         app.config['SQLALCHEMY_DATABASE_URI'] =  'reset'
         sps_names = {}
@@ -1231,7 +1231,7 @@ def edit_misc_deal(DEAL, TASK, DESC, Id):
         con.close()
         return redirect('/view_misc')
     else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         all_sps = SPS_CURRENT.query.all()
         sps_names = {}
         for row in all_sps:
@@ -1245,7 +1245,7 @@ def edit_misc_deal(DEAL, TASK, DESC, Id):
 @app.route('/dup_vbuilds',methods = ['GET', 'POST'])
 @login_required
 def view_dup_v_builds():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_dup_builds = DUP_V_BUILDS_VW.query.all()
     cols =  DUP_V_BUILDS_VW.__table__.columns.keys()
     return render_template('dup_v_builds.html', cols = cols, all_dup_builds = all_dup_builds)
@@ -1261,7 +1261,7 @@ def get_missed_deals():
         session['m_start_dt'] = start_dt
         session['m_end_dt'] = end_dt
         
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         query = DEAL_FULL_INFO_VW.query.filter(DEAL_FULL_INFO_VW.O_start_date>=start_dt, DEAL_FULL_INFO_VW.O_start_date<=end_dt).order_by(DEAL_FULL_INFO_VW.O_start_date, DEAL_FULL_INFO_VW.LR_Deal).with_entities(DEAL_FULL_INFO_VW.LR_Deal)
         query = query.distinct()
         cols = ['LR_Deal']
@@ -1277,7 +1277,7 @@ def option2(LR_Deal):
 
 @app.route('/option_3/<string:LR_Deal>', methods=['GET', 'POST'])
 def option3(LR_Deal):
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     deal = LR_Deal
     reason = 'Gate3 delayed'
     return render_template('missed_deals_gate3_info.html', deal = deal, reason = reason)    
@@ -1285,7 +1285,7 @@ def option3(LR_Deal):
 @app.route('/update_missed_skus', methods = ['GET', 'POST'])
 def update():
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         deal = request.form['deal'].replace('/', '_')
         ea_skus = int(float(request.form['ea_skus']))
         ppk_skus = int(float(request.form['ppk_skus']))
@@ -1309,7 +1309,7 @@ def update():
 @app.route('/update_gate3_dt', methods = ['GET', 'POST'])
 def update_gate3_dt():
     if request.method == 'POST':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
         deal = request.form['deal'].replace('/', '_')
         eff_dt = datetime.today().strftime('%Y-%m-%d')
         reason = request.form['reason']
@@ -1359,8 +1359,8 @@ def pog_hold(Deal_Num, POG, BUILD_TYP, START_DT, END_DT):
         cur.execute('''COMMIT''')
     cur.close()
     con.close()    
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')            
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')            
     query_2 = DEAL_VW_SUMM_SHOW.query.filter_by(Deal_Num = Deal_Num[:4]).all()
     cols = DEAL_VW_SUMM_SHOW.__table__.columns.keys()
     cols = [x for x in cols if x not in ['MERCH_RELEASE', 'BUILD_DAYS']]
@@ -1385,8 +1385,8 @@ def pog_release(Deal_Num, POG, BUILD_TYP, START_DT):
     cur.execute('''COMMIT''')
     cur.close()
     con.close()    
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
-    engine = create_engine('postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling')            
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    engine = create_engine('mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling')            
     query_2 = DEAL_VW_SUMM_SHOW.query.filter_by(Deal_Num = Deal_Num[:4]).all()
     cols = DEAL_VW_SUMM_SHOW.__table__.columns.keys()
     cols = [x for x in cols if x not in ['MERCH_RELEASE', 'BUILD_DAYS']]
@@ -1399,7 +1399,7 @@ def pog_release(Deal_Num, POG, BUILD_TYP, START_DT):
 @app.route('/placeholders', methods = ['GET', 'POST'])
 @login_required
 def get_placeholders():
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://' + session['username'] + ':' + session['password'] + '@host/scheduling'
     all_placeholders = PLACEHOLDER_VW.query.all()
     cols =  PLACEHOLDER_VW.__table__.columns.keys()
     app.config['SQLALCHEMY_DATABASE_URI'] = 'reset'
@@ -1428,4 +1428,4 @@ def internal_error(error):
 
 if __name__ == "__main__":
     serve(app, host='localhost', port = 8000)
-    #app.run('localhost', port = 8000,  debug=True)
+    #app.run('localhost', port = 8080,  debug=True)

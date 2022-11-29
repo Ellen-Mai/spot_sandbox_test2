@@ -15,11 +15,11 @@ my_list = sys.argv[1].split(':')
 user = my_list[0]
 pwd = my_list[1]
 
-
-con = p.connect(database="Scheduling", user=user, password=pwd, host="127.0.0.1", port="5432")
+#221115: change port Azure mysql port3306
+con = p.connect(database="Scheduling", user="ctcadmin@mpm-spot-db", password=pwd, host="mpm-spot-db.mysql.database.azure.com", port="3306")
 cur = con.cursor()
 
-engine = create_engine('postgresql://' + user + ':' + pwd + '@localhost/Scheduling')
+engine = create_engine('mysql://' + user + ':' + pwd + '@localhost/Scheduling')
 
 df = pd.read_sql('''Select * from public."CPR_DEAL_POG_INFO" where "Target_store_setup" > CURRENT_DATE''', con=engine)
 

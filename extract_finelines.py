@@ -3,9 +3,9 @@ import pandas as pd
 import psycopg2 as p
 from sqlalchemy import create_engine
 
-con = p.connect(database="Scheduling", user="postgres", password="test", host="127.0.0.1", port="5432")
+con = p.connect(database="Scheduling", user="ctcadmin@mpm-spot-db", password="test", host="mpm-spot-db.mysql.database.azure.com", port="5432")
 cur = con.cursor()
-engine = create_engine('postgresql://postgres:test@localhost/Scheduling')
+engine = create_engine('mysql://postgres:test@localhost/Scheduling')
 
 df = pd.read_excel('CPR_2021.xlsx')
 
